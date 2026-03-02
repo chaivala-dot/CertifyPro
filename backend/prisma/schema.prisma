@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  name          String?
+  picture       String?
+  passwordHash  String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  templates     Template[]
+  batches       Batch[]
+  organizations Organization[]
+  accounts      Account[]
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  batches   Batch[]
+}
+
+model Template {
+  id              String   @id @default(uuid())
+  name            String
+  backgroundUrl   String?
+  canvasStateJson String   @db.Text
+  creatorId       String
+  creator         User     @relation(fields: [creatorId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  batches         Batch[]
+}
+
+model Batch {
+  id             String        @id @default(uuid())
+  name           String
+  templateId     String
+  template       Template      @relation(fields: [templateId], references: [id])
+  creatorId      String
+  creator        User          @relation(fields: [creatorId], references: [id])
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  status         BatchStatus   @default(PENDING)
+  totalCount     Int           @default(0)
+  completedCount Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  certificates   Certificate[]
+}
+
+enum BatchStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model Certificate {
+  id             String    @id @default(uuid())
+  batchId        String
+  batch          Batch     @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  recipientName  String
+  recipientEmail String?
+  customFields   Json?
+  pdfUrl         String?
+  qrCodeUrl      String?
+  uniqueCode     String    @unique @default(uuid())
+  issuedAt       DateTime?
+  status         CertStatus @default(PENDING)
+}
+
+model Account {
+  id                String   @id @default(uuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
+  provider          String
+  providerAccountId String
+  accessToken       String?
+  refreshToken      String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+}
+
+enum CertStatus {
+  PENDING
+  GENERATED
+  FAILED
+}
