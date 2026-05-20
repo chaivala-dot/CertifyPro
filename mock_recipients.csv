@@ -1,0 +1,11 @@
+name,email,courseTitle,grade,issuedBy
+John Doe,john@example.com,Full Stack Web Development,A+,CertifyPro Academy
+Jane Smith,jane@example.com,Full Stack Web Development,A,CertifyPro Academy
+Alice Johnson,alice@example.com,Cloud Architecture & DevOps,A,Cloud Masters Institute
+Bob Wilson,bob@example.com,Cloud Architecture & DevOps,B+,Cloud Masters Institute
+Charlie Brown,charlie@example.com,Professional Design Fundamentals,A-,Creative Arts School
+David Miller,david@example.com,Professional Design Fundamentals,A+,Creative Arts School
+Eve Anderson,eve@example.com,Advanced Machine Learning,A,Data Science Hub
+Frank Thomas,frank@example.com,Advanced Machine Learning,B,Data Science Hub
+Grace Hopper,grace@example.com,Computer Science Legacy,Honors,Computing Heritage Foundation
+Alan Turing,alan@example.com,Computer Science Legacy,Honors,Computing Heritage Foundation

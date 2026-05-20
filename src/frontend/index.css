@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Font Faces ─── */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/assets/fonts/MonaSans-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/InstrumentSerif-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/InstrumentSerif-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono-Variable.woff2") format("woff2");
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    /* CertifyPro Dark Theme — near-black bg, emerald accent, purple secondary, amber warning */
+    --radius: 0.5rem;
+
+    /* Base */
+    --background: 0.11 0.008 265;
+    --foreground: 0.91 0.015 260;
+
+    /* Cards / Surfaces */
+    --card: 0.14 0.012 265;
+    --card-foreground: 0.91 0.015 260;
+    --popover: 0.16 0.014 265;
+    --popover-foreground: 0.91 0.015 260;
+
+    /* Primary — Emerald green */
+    --primary: 0.82 0.12 162;
+    --primary-foreground: 0.10 0.006 265;
+
+    /* Secondary — Subtle surface */
+    --secondary: 0.20 0.016 265;
+    --secondary-foreground: 0.85 0.015 260;
+
+    /* Muted */
+    --muted: 0.20 0.016 265;
+    --muted-foreground: 0.52 0.025 260;
+
+    /* Accent — Purple */
+    --accent: 0.60 0.15 270;
+    --accent-foreground: 0.97 0.005 260;
+
+    /* Destructive */
+    --destructive: 0.60 0.20 25;
+    --destructive-foreground: 0.97 0.005 260;
+
+    /* Borders / Inputs */
+    --border: 0.24 0.018 265;
+    --input: 0.22 0.016 265;
+    --ring: 0.82 0.12 162;
+
+    /* Charts */
+    --chart-1: 0.82 0.12 162;
+    --chart-2: 0.60 0.15 270;
+    --chart-3: 0.72 0.16 55;
+    --chart-4: 0.65 0.18 25;
+    --chart-5: 0.75 0.12 200;
+
+    /* Sidebar */
+    --sidebar: 0.13 0.010 265;
+    --sidebar-foreground: 0.91 0.015 260;
+    --sidebar-primary: 0.82 0.12 162;
+    --sidebar-primary-foreground: 0.10 0.006 265;
+    --sidebar-accent: 0.18 0.014 265;
+    --sidebar-accent-foreground: 0.85 0.015 260;
+    --sidebar-border: 0.22 0.016 265;
+    --sidebar-ring: 0.82 0.12 162;
+
+    /* Brand custom tokens */
+    --emerald: 0.82 0.12 162;
+    --emerald-dim: 0.65 0.10 162;
+    --purple: 0.60 0.15 270;
+    --amber: 0.72 0.16 55;
+    --surface-1: 0.14 0.012 265;
+    --surface-2: 0.18 0.016 265;
+    --surface-3: 0.22 0.020 265;
+    --grid-line: 0.28 0.020 265;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Mona Sans", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Grid background texture */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: linear-gradient(
+        oklch(var(--grid-line) / 0.4) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, oklch(var(--grid-line) / 0.4) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  }
+  .font-mono {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+  }
+  .font-serif {
+    font-family: "Instrument Serif", Georgia, serif;
+  }
+
+  .text-emerald {
+    color: oklch(var(--emerald));
+  }
+  .text-amber {
+    color: oklch(var(--amber));
+  }
+  .text-purple {
+    color: oklch(var(--purple));
+  }
+  .bg-emerald {
+    background-color: oklch(var(--emerald));
+  }
+
+  .glow-emerald {
+    box-shadow: 0 0 40px oklch(var(--emerald) / 0.15),
+      0 0 80px oklch(var(--emerald) / 0.05);
+  }
+  .glow-purple {
+    box-shadow: 0 0 40px oklch(var(--purple) / 0.15);
+  }
+
+  .surface-1 {
+    background-color: oklch(var(--surface-1));
+  }
+  .surface-2 {
+    background-color: oklch(var(--surface-2));
+  }
+  .surface-3 {
+    background-color: oklch(var(--surface-3));
+  }
+
+  .border-emerald-subtle {
+    border-color: oklch(var(--emerald) / 0.3);
+  }
+  .border-purple-subtle {
+    border-color: oklch(var(--purple) / 0.3);
+  }
+
+  /* Certificate display font */
+  .cert-title {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-style: italic;
+  }
+
+  /* Noise overlay for depth */
+  .noise::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.15;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+}

@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -35,7 +35,7 @@ model Template {
   id              String   @id @default(uuid())
   name            String
   backgroundUrl   String?
-  canvasStateJson String   @db.Text
+  canvasStateJson String
   creatorId       String
   creator         User     @relation(fields: [creatorId], references: [id])
   createdAt       DateTime @default(now())

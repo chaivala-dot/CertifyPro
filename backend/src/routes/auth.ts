@@ -30,6 +30,12 @@ router.get("/google", (_req: Request, res: Response) => {
     env.GOOGLE_REDIRECT_URI ||
     "http://localhost:8000/api/auth/google/callback";
 
+  // If Google credentials are not set, use a mock flow
+  if (!env.GOOGLE_CLIENT_ID || env.GOOGLE_CLIENT_ID.startsWith("your-")) {
+    res.redirect(`${redirectUri}?code=mock-dev-code-12345`);
+    return;
+  }
+
   const params = new URLSearchParams({
     client_id: env.GOOGLE_CLIENT_ID,
     redirect_uri: redirectUri,
@@ -54,53 +60,73 @@ router.get("/google/callback", async (req: Request, res: Response) => {
     env.GOOGLE_REDIRECT_URI ||
     "http://localhost:8000/api/auth/google/callback";
 
-  const tokenResponse = await fetch(
-    "https://oauth2.googleapis.com/token",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        code,
-        client_id: env.GOOGLE_CLIENT_ID,
-        client_secret: env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: redirectUri,
-        grant_type: "authorization_code",
-      }).toString(),
-    },
-  );
-
-  if (!tokenResponse.ok) {
-    return res
-      .status(400)
-      .json({ error: "Failed to exchange code for tokens" });
-  }
-
-  const tokenJson = (await tokenResponse.json()) as {
-    access_token: string;
-    id_token?: string;
-  };
-
-  const userInfoResponse = await fetch(
-    "https://www.googleapis.com/oauth2/v3/userinfo",
-    {
-      headers: {
-        Authorization: `Bearer ${tokenJson.access_token}`,
-      },
-    },
-  );
-
-  if (!userInfoResponse.ok) {
-    return res.status(400).json({ error: "Failed to fetch user info" });
-  }
-
-  const profile = (await userInfoResponse.json()) as {
+  let profile: {
     sub: string;
     email?: string;
     name?: string;
     picture?: string;
   };
+  let accessToken = "mock-access-token-12345";
+
+  // If using the mock dev flow
+  if (code.startsWith("mock-dev-code-") || !env.GOOGLE_CLIENT_ID || env.GOOGLE_CLIENT_ID.startsWith("your-")) {
+    profile = {
+      sub: "mock-google-id-12345",
+      email: "google.dev@example.com",
+      name: "Google Developer",
+      picture: "https://lh3.googleusercontent.com/a/default-user",
+    };
+  } else {
+    // Real Google OAuth Flow
+    const tokenResponse = await fetch(
+      "https://oauth2.googleapis.com/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          code,
+          client_id: env.GOOGLE_CLIENT_ID,
+          client_secret: env.GOOGLE_CLIENT_SECRET,
+          redirect_uri: redirectUri,
+          grant_type: "authorization_code",
+        }).toString(),
+      },
+    );
+
+    if (!tokenResponse.ok) {
+      return res
+        .status(400)
+        .json({ error: "Failed to exchange code for tokens" });
+    }
+
+    const tokenJson = (await tokenResponse.json()) as {
+      access_token: string;
+      id_token?: string;
+    };
+    accessToken = tokenJson.access_token;
+
+    const userInfoResponse = await fetch(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${tokenJson.access_token}`,
+        },
+      },
+    );
+
+    if (!userInfoResponse.ok) {
+      return res.status(400).json({ error: "Failed to fetch user info" });
+    }
+
+    profile = (await userInfoResponse.json()) as {
+      sub: string;
+      email?: string;
+      name?: string;
+      picture?: string;
+    };
+  }
 
   if (!profile.email) {
     return res.status(400).json({ error: "Google account has no email" });
@@ -138,7 +164,7 @@ router.get("/google/callback", async (req: Request, res: Response) => {
         provider,
         providerAccountId,
         userId: user.id,
-        accessToken: tokenJson.access_token,
+        accessToken,
       },
       include: { user: true },
     });

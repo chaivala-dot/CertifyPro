@@ -1,0 +1,30 @@
+src/controllers/batch.controller.ts(29,51): error TS2345: Argument of type 'string | string[] | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/controllers/batch.controller.ts(42,69): error TS2379: Argument of type '{ name: string; templateId: string; recipients?: { name: string; email?: string | null | undefined; customFields?: unknown; }[] | undefined; }' is not assignable to parameter of type '{ name: string; templateId: string; recipients?: { name: string; email?: string; customFields?: unknown; }[]; }' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'recipients' are incompatible.
+    Type '{ name: string; email?: string | null | undefined; customFields?: unknown; }[] | undefined' is not assignable to type '{ name: string; email?: string; customFields?: unknown; }[]'.
+      Type 'undefined' is not assignable to type '{ name: string; email?: string; customFields?: unknown; }[]'.
+src/controllers/batch.controller.ts(51,40): error TS2345: Argument of type 'string | string[] | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/controllers/certificate.controller.ts(11,62): error TS2345: Argument of type 'string | string[] | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/controllers/certificate.controller.ts(36,73): error TS2345: Argument of type 'string | string[] | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/controllers/template.controller.ts(23,60): error TS2345: Argument of type 'string | string[] | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/controllers/template.controller.ts(36,75): error TS2379: Argument of type '{ name: string; backgroundUrl?: string | null | undefined; canvasStateJson?: unknown; }' is not assignable to parameter of type '{ name: string; backgroundUrl?: string | null; canvasStateJson?: unknown; }' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'backgroundUrl' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | null'.
+      Type 'undefined' is not assignable to type 'string | null'.
+src/controllers/template.controller.ts(46,62): error TS2345: Argument of type 'string | string[] | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/controllers/template.controller.ts(55,46): error TS2345: Argument of type 'string | string[] | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/routes/templates.ts(13,17): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type '(req: AuthedRequest, res: Response, next: NextFunction) => Promise<void>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+      Type '(req: AuthedRequest, res: Response<any, Record<string, any>>, next: NextFunction) => Promise<void>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.
+src/routes/templates.ts(14,20): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type '(req: AuthedRequest, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+      Type '(req: AuthedRequest, res: Response<any, Record<string, any>>, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.

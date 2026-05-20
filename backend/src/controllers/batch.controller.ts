@@ -5,7 +5,7 @@ import { AuthedRequest } from "../middleware/auth.js";
 
 const recipientSchema = z.object({
     name: z.string().min(1, "Recipient name is required"),
-    email: z.string().email().optional().nullable(),
+    email: z.string().optional().nullable(),
     customFields: z.unknown().optional(),
 });
 

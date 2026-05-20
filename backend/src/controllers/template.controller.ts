@@ -5,7 +5,7 @@ import { AuthedRequest } from "../middleware/auth.js";
 
 const templateSchema = z.object({
     name: z.string().min(1, "name is required"),
-    backgroundUrl: z.string().url().optional().nullable(),
+    backgroundUrl: z.string().optional().nullable(),
     canvasStateJson: z.unknown().optional(),
 });
 
